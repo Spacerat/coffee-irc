@@ -1,5 +1,4 @@
-define -> (irc) -> # Two lines of boilerplate at the start, one at the end.
-	@name = 'ping'
-	irc.on 'cmd.PING', (message) ->
+define -> (irc, hook) ->
+	hook '#PING', (message) ->
 		irc.S('PONG %s', message.text)
 	return this
