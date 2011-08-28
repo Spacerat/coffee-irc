@@ -4,7 +4,7 @@ define -> (irc, hook) ->
 		irc.emit('connected')
 	
 	#Nick taken
-	hook '#443', (m) ->
+	hook '#433', (m) ->
 		if (nick = irc.nextNick()) == null
 			if not irc.emit('no_nick')
 				irc.disconnect()
@@ -22,4 +22,6 @@ define -> (irc, hook) ->
 		}
 		irc.emit('message', m.text, message)
 
+	hook '/msg', (c) ->
+		irc.S('PRIVMSG '+c.text)
 	return this

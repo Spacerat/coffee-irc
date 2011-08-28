@@ -68,8 +68,9 @@ define ['./modules'], (modules) ->
 			
 		
 		nextNick: ->
+			console.log @nicks
 			@nickn +=1
-			if @nicks.length = @nickn then return null
+			if @nicks.length == @nickn then return null
 			return @nicks[@nickn]
 		
 		#Process a line of input from the client

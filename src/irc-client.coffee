@@ -31,17 +31,17 @@ ConnectIRC = (client, server, port = 6667) ->
 		for line in lines
 			line = line.trim()
 			if line
-				#console.log("<--", line)
+				console.log("<--", line)
 				client.recv(line)
 			
 	client.on 'send', (str) ->
 		socket.write(str + "\r\n")
-		#console.log("-->" + str)
+		console.log("-->" + str)
 	# Communication with the client
 	client.on 'log', console.log
 	process.stdin.on 'data', (line)->
 		if not client.input(line)
-			stdin_channel.say(line)
+			stdin_channel.say(line) if stdin_channel?
 		
 		
 	client.load_default_modules()
@@ -57,7 +57,7 @@ ConnectIRC = (client, server, port = 6667) ->
 	client.on 'names', (channel) ->
 		console.log "Users in #{channel.name}: "+channel.names.join(', ')
 	client.on 'message', (text, data) ->
-		console.log data
+		console.log text
 	client.on '#NOTICE', (m) ->
 		console.log m.text
 	return [client, socket]
