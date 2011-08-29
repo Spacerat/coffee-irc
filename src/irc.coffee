@@ -13,7 +13,7 @@ exports.Client = class Client
 	#Create a new IRC class.
 	constructor: (options)->
 		@cb = {}
-		
+		@connected = false
 		@nicks = (options.nicks ?= ["Anonymous", "Totally_unique_nick"])
 		@nickn = 0
 		@nick = @nicks[@nickn]
@@ -29,6 +29,7 @@ exports.Client = class Client
 		
 		@S('NICK %s', @nick)
 		@S('USER %s 8 *: %s', @ident, @realname)
+		@emit('init')
 
 	#Register a callback for an event
 	on: (what, callback) ->
@@ -58,7 +59,7 @@ exports.Client = class Client
 				str = line.slice(i + 1)
 			else
 				cmd = line
-				str = ''
+				str = ''f
 			# The arguments object, passed to all user command (/) hooks
 			args = str.split(' ')
 			arguments = {

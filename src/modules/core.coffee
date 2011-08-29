@@ -1,8 +1,9 @@
 exports.module = (hook, m) ->
 	# Connected to the server
 	hook '#001', (irc, message) ->
+		irc.connected = true
 		irc.emit('connected')
-	
+		
 	# Nick taken
 	hook '#433', (irc, message) ->
 		if (nick = irc.nextNick()) == null

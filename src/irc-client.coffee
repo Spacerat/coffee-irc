@@ -62,14 +62,12 @@ ConnectIRC = (client, server, port = 6667) ->
 	
 	client.onAny(modules.emit)
 	
-	modules.load_module('core', client)
-	modules.load_module('ping', client)
-	modules.load_module('channels', client)
+	modules.load_module(mod, client) for mod in config.modules
 		
 	return [client, socket]
 
 irc = require('./irc')	
-client = new irc.Client()
+client = new irc.Client(config)
 ConnectIRC(client, 'irc.freenode.net')
 	
 ###
