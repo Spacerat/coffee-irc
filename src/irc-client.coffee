@@ -2,11 +2,11 @@
 A little client for testing the IRC librarry
 ###
 
-requirejs = require 'requirejs'
 net = require 'net'
-requirejs.config
-	nodeRequire: require
-	
+
+modules = new require('./modules/modules').modules()
+config = require('./config.js').config
+
 ConnectIRC = (client, server, port = 6667) ->
 	# Here we patch the client to our new socket and stdin for input, and stdio for output
 	# We also set up the "interface"
@@ -15,6 +15,7 @@ ConnectIRC = (client, server, port = 6667) ->
 	# Set up connections
 	process.stdin.resume()
 	process.stdin.setEncoding('utf8')	
+	
 	socket = new net.Socket
 		type: 'tcp6'
 	socket.setEncoding 'utf8'
@@ -41,10 +42,8 @@ ConnectIRC = (client, server, port = 6667) ->
 	client.on 'log', console.log
 	process.stdin.on 'data', (line)->
 		if not client.input(line)
-			stdin_channel.say(line) if stdin_channel?
+			stdin_channel.say(line.trim()) if stdin_channel?
 		
-		
-	client.load_default_modules()
 	# Connect to the server
 	socket.connect(port, server)
 	
@@ -60,9 +59,22 @@ ConnectIRC = (client, server, port = 6667) ->
 		console.log text
 	client.on '#NOTICE', (m) ->
 		console.log m.text
+	
+	client.onAny(modules.emit)
+	
+	modules.load_module('core', client)
+	modules.load_module('ping', client)
+	modules.load_module('channels', client)
+		
 	return [client, socket]
 
-requirejs ['irc/irc'], (irc)->
+irc = require('./irc')	
+client = new irc.Client()
+ConnectIRC(client, 'irc.freenode.net')
+	
+###
+require ['irc/irc'], (irc)->
 	#IRC module loaded, let's roll!
 	client = new irc.Client(require('./config.js').config)
 	ConnectIRC(client, 'irc.freenode.net')
+###
