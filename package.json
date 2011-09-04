@@ -1,0 +1,11 @@
+{
+    "name": "coffee-irc"
+  , "description": "Platform independant library for running IRC in a server or client environment"
+  , "version": "0.0.2"
+  , "private": true
+  , "homepage": "https://github.com/Spacerat/coffee-irc"
+  , "author": "Joseph Atkins-Turkish <spacerat3004@gmail.com> (https://github.com/Spacerat)"
+  , "engines": {
+        "node": ">=0.4.0"
+    }
+}
