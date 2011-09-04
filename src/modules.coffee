@@ -1,7 +1,6 @@
 
-###
-Uncache a module (if applicable)
-###
+
+# Remove module from node.js's cache (if applicable)
 uncache_mod = (name)->
 	if require.cache?
 		res = require.resolve(MODDIR+name)
